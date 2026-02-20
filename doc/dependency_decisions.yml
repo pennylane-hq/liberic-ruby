@@ -45,25 +45,6 @@
 
 ########################################
 #
-# COMMERCIAL LICENSES SECTION
-#
-########################################
-
-- - :approve
-  - sidekiq
-  - :why: We have purchased a commercial license
-- - :approve
-  - sidekiq-pro
-  - :why: We have purchased a commercial license
-- - :approve
-  - hexapdf
-  - :why: We have purchased a commercial license
-- - :approve
-  - fintecture
-  - :why: Covered by our commercial relationship
-
-########################################
-#
 # NOT IDEAL BUT NON-BLOCKING
 # we want to manually review and approve software using those licenses on
 # a case-by-case approach because it's debatable setup
