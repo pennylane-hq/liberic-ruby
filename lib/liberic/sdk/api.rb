@@ -247,6 +247,60 @@ module Liberic
       #     EricRueckgabepufferHandle handle);
       attach_eric_function :rueckgabepuffer_laenge, [:pointer], :uint
 
+      # --- Multithreading API ---
+
+      # ERICAPI_IMPORT EricInstanzHandle STDCALL EricMtInstanzErzeugen(
+      #     const char *pluginPfad, const char *logPfad);
+      attach_function :mt_instanz_erzeugen, :EricMtInstanzErzeugen, [:string, :string], :pointer
+
+      # ERICAPI_IMPORT int STDCALL EricMtInstanzFreigeben(EricInstanzHandle instanz);
+      attach_function :mt_instanz_freigeben, :EricMtInstanzFreigeben, [:pointer], :int
+
+      # ERICAPI_IMPORT EricRueckgabepufferHandle STDCALL EricMtRueckgabepufferErzeugen(
+      #     EricInstanzHandle instanz);
+      attach_function :mt_rueckgabepuffer_erzeugen, :EricMtRueckgabepufferErzeugen, [:pointer], :pointer
+
+      # ERICAPI_IMPORT int STDCALL EricMtRueckgabepufferFreigeben(
+      #     EricInstanzHandle instanz, EricRueckgabepufferHandle handle);
+      attach_function :mt_rueckgabepuffer_freigeben, :EricMtRueckgabepufferFreigeben, [:pointer, :pointer], :int
+
+      # ERICAPI_IMPORT const char* STDCALL EricMtRueckgabepufferInhalt(
+      #     EricInstanzHandle instanz, EricRueckgabepufferHandle handle);
+      attach_function :mt_rueckgabepuffer_inhalt, :EricMtRueckgabepufferInhalt, [:pointer, :pointer], :string
+
+      # ERICAPI_IMPORT int STDCALL EricMtBearbeiteVorgang(
+      #     EricInstanzHandle instanz, const char* datenpuffer, const char* datenartVersion,
+      #     uint32_t bearbeitungsFlags, const eric_druck_parameter_t* druckParameter,
+      #     const eric_verschluesselungs_parameter_t* cryptoParameter,
+      #     EricTransferHandle* transferHandle,
+      #     EricRueckgabepufferHandle rueckgabeXmlPuffer,
+      #     EricRueckgabepufferHandle serverantwortXmlPuffer);
+      attach_function :mt_bearbeite_vorgang, :EricMtBearbeiteVorgang, [:pointer, :string, :string,
+          Types::BearbeitungFlag, :pointer, :pointer, :pointer, :pointer, :pointer], :int
+
+      # ERICAPI_IMPORT int STDCALL EricMtCheckXML(
+      #     EricInstanzHandle instanz, const char* xml, const char* datenartVersion,
+      #     EricRueckgabepufferHandle fehlertextPuffer);
+      attach_function :mt_check_xml, :EricMtCheckXML, [:pointer, :string, :string, :pointer], :int
+
+      # ERICAPI_IMPORT int STDCALL EricMtVersion(
+      #     EricInstanzHandle instanz, EricRueckgabepufferHandle rueckgabeXmlPuffer);
+      attach_function :mt_version, :EricMtVersion, [:pointer, :pointer], :int
+
+      # ERICAPI_IMPORT int STDCALL EricMtGetHandleToCertificate(
+      #     EricInstanzHandle instanz, EricZertifikatHandle* hToken,
+      #     uint32_t* iInfoPinSupport, const byteChar* pathToKeystore);
+      attach_function :mt_get_handle_to_certificate, :EricMtGetHandleToCertificate, [:pointer, :pointer, :pointer, :string], :int
+
+      # ERICAPI_IMPORT int STDCALL EricMtCloseHandleToCertificate(
+      #     EricInstanzHandle instanz, EricZertifikatHandle hToken);
+      attach_function :mt_close_handle_to_certificate, :EricMtCloseHandleToCertificate, [:pointer, :uint], :int
+
+      # ERICAPI_IMPORT int STDCALL EricMtHoleZertifikatEigenschaften(
+      #     EricInstanzHandle instanz, EricZertifikatHandle hToken,
+      #     const byteChar* pin, EricRueckgabepufferHandle rueckgabeXmlPuffer);
+      attach_function :mt_hole_zertifikat_eigenschaften, :EricMtHoleZertifikatEigenschaften, [:pointer, :uint, :string, :pointer], :int
+
       # ERICAPI_IMPORT int STDCALL EricSystemCheck(
       #     void);
       attach_eric_function :system_check, [], :int

@@ -20,7 +20,7 @@ module Liberic
 
     def check
       Helpers::Invocation.with_result_buffer do |handle|
-        SDK::API.check_xml(@xml, @type, handle)
+        SDK::API.mt_check_xml(Liberic.instance, @xml, @type, handle)
       end
     end
 
@@ -62,7 +62,7 @@ module Liberic
       print_params = create_print_params(options)
 
       result = Helpers::Invocation.with_local_and_server_result_buffers do |local_buffer, server_buffer|
-        SDK::API.bearbeite_vorgang(@xml, @type,
+        SDK::API.mt_bearbeite_vorgang(Liberic.instance, @xml, @type,
           eric_action,
           (action == :submit ? nil : print_params),
           options[:encryption],

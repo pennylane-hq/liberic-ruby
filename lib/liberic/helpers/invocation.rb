@@ -12,25 +12,25 @@ module Liberic
       end
 
       def with_result_buffer(raise_on_error = true, &block)
-        handle = SDK::API.rueckgabepuffer_erzeugen
+        handle = SDK::API.mt_rueckgabepuffer_erzeugen(Liberic.instance)
         if raise_on_error
           raise_on_error(yield(handle))
         else
           yield(handle)
         end
-        result = Liberic::SDK::API.rueckgabepuffer_inhalt(handle)
-        SDK::API.rueckgabepuffer_freigeben(handle)
+        result = SDK::API.mt_rueckgabepuffer_inhalt(Liberic.instance, handle)
+        SDK::API.mt_rueckgabepuffer_freigeben(Liberic.instance, handle)
         result
       end
 
       def with_local_and_server_result_buffers(&block)
-        local_handle = SDK::API.rueckgabepuffer_erzeugen
-        server_handle = SDK::API.rueckgabepuffer_erzeugen
+        local_handle = SDK::API.mt_rueckgabepuffer_erzeugen(Liberic.instance)
+        server_handle = SDK::API.mt_rueckgabepuffer_erzeugen(Liberic.instance)
 
         error_code = yield(local_handle, server_handle)
 
-        local_result = Liberic::SDK::API.rueckgabepuffer_inhalt(local_handle)
-        server_result = Liberic::SDK::API.rueckgabepuffer_inhalt(server_handle)
+        local_result = SDK::API.mt_rueckgabepuffer_inhalt(Liberic.instance, local_handle)
+        server_result = SDK::API.mt_rueckgabepuffer_inhalt(Liberic.instance, server_handle)
 
         return {
           error_code: error_code,

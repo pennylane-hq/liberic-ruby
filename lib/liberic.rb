@@ -11,9 +11,15 @@ require 'liberic/process'
 require 'liberic/config'
 
 module Liberic
-  SDK::API::initialisiere(nil, nil)
-
-  check_eric_version!
+  class << self
+    def instance
+      return @instance if @instance
+      @instance = SDK::API.mt_instanz_erzeugen(nil, '/tmp/eric-logs')
+      raise InitializationError.new('EricMtInstanzErzeugen failed') if @instance.null?
+      check_eric_version!
+      @instance
+    end
+  end
 
   def config
     @config ||= Config.new
