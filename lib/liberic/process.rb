@@ -58,15 +58,16 @@ module Liberic
     def execute(options = {})
       action = options[:action] ||= :validate
       eric_action = ACTIONS[action] || (raise ExecutionError.new("Invalid action: #{action}. Valid actions are #{ACTIONS.keys.join(', ')}"))
+      flags = Types::BearbeitungFlag[eric_action]
       is_printing = %w[submit print_and_submit print_and_submit_auth].include?(action.to_s)
       print_params = create_print_params(options)
 
       result = Helpers::Invocation.with_local_and_server_result_buffers do |local_buffer, server_buffer|
         SDK::API.mt_bearbeite_vorgang(Liberic.instance, @xml, @type,
-          eric_action,
+          flags,
           (action == :submit ? nil : print_params),
           options[:encryption],
-          (is_printing ? FFI::MemoryPointer.new(:uint32, 1) : nil), # transferHandle
+          (is_printing ? FFI::MemoryPointer.new(:uint32, 1) : nil),
           local_buffer,
           server_buffer)
       end

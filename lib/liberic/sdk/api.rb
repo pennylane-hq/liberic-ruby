@@ -276,7 +276,7 @@ module Liberic
       #     EricRueckgabepufferHandle rueckgabeXmlPuffer,
       #     EricRueckgabepufferHandle serverantwortXmlPuffer);
       attach_function :mt_bearbeite_vorgang, :EricMtBearbeiteVorgang, [:pointer, :string, :string,
-          Types::BearbeitungFlag, :pointer, :pointer, :pointer, :pointer, :pointer], :int
+          :uint32, :pointer, :pointer, :pointer, :pointer, :pointer], :int
 
       # ERICAPI_IMPORT int STDCALL EricMtCheckXML(
       #     EricInstanzHandle instanz, const char* xml, const char* datenartVersion,
