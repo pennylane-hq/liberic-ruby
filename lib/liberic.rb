@@ -14,7 +14,7 @@ module Liberic
   class << self
     def instance
       return @instance if @instance
-      @instance = SDK::API.mt_instanz_erzeugen(nil, '/tmp/eric-logs')
+      @instance = SDK::API.mt_instanz_erzeugen(ERIC_LIB_FOLDER, '/tmp/eric-logs')
       raise InitializationError.new('EricMtInstanzErzeugen failed') if @instance.null?
       check_eric_version!
       @instance
