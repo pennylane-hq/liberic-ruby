@@ -67,7 +67,6 @@ module Liberic
           flags,
           (action == :submit ? nil : print_params),
           options[:encryption],
-          (is_printing ? FFI::MemoryPointer.new(:uint32, 1) : nil),
           local_buffer,
           server_buffer)
       end

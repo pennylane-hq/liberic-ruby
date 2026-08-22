@@ -272,11 +272,10 @@ module Liberic
       #     EricInstanzHandle instanz, const char* datenpuffer, const char* datenartVersion,
       #     uint32_t bearbeitungsFlags, const eric_druck_parameter_t* druckParameter,
       #     const eric_verschluesselungs_parameter_t* cryptoParameter,
-      #     EricTransferHandle* transferHandle,
       #     EricRueckgabepufferHandle rueckgabeXmlPuffer,
       #     EricRueckgabepufferHandle serverantwortXmlPuffer);
       attach_function :mt_bearbeite_vorgang, :EricMtBearbeiteVorgang, [:pointer, :string, :string,
-          :uint32, :pointer, :pointer, :pointer, :pointer, :pointer], :int
+          :uint32, :pointer, :pointer, :pointer, :pointer], :int
 
       # ERICAPI_IMPORT int STDCALL EricMtCheckXML(
       #     EricInstanzHandle instanz, const char* xml, const char* datenartVersion,
@@ -300,6 +299,25 @@ module Liberic
       #     EricInstanzHandle instanz, EricZertifikatHandle hToken,
       #     const byteChar* pin, EricRueckgabepufferHandle rueckgabeXmlPuffer);
       attach_function :mt_hole_zertifikat_eigenschaften, :EricMtHoleZertifikatEigenschaften, [:pointer, :uint, :string, :pointer], :int
+
+      # ERICAPI_IMPORT int STDCALL EricMtEinstellungLesen(
+      #     EricInstanzHandle instanz, const char *name,
+      #     EricRueckgabepufferHandle rueckgabePuffer);
+      attach_function :mt_einstellung_lesen, :EricMtEinstellungLesen, [:pointer, :string, :pointer], :int
+
+      # ERICAPI_IMPORT int STDCALL EricMtEinstellungSetzen(
+      #     EricInstanzHandle instanz, const char *name, const byteChar *wert);
+      attach_function :mt_einstellung_setzen, :EricMtEinstellungSetzen, [:pointer, :string, :string], :int
+
+      # ERICAPI_IMPORT int STDCALL EricMtRegistriereLogCallback(
+      #     EricInstanzHandle instanz, EricLogCallback funktion,
+      #     uint32_t schreibeEricLogDatei, void *benutzerdaten);
+      attach_function :mt_registriere_log_callback, :EricMtRegistriereLogCallback, [:pointer, :log_callback, :uint, :pointer], :int
+
+      # ERICAPI_IMPORT int STDCALL EricMtHoleFehlerText(
+      #     EricInstanzHandle instanz, int fehlerkode,
+      #     EricRueckgabepufferHandle rueckgabePuffer);
+      attach_function :mt_hole_fehler_text, :EricMtHoleFehlerText, [:pointer, :int, :pointer], :int
 
       # ERICAPI_IMPORT int STDCALL EricSystemCheck(
       #     void);
