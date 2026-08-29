@@ -2,6 +2,8 @@ require "open3"
 require "rbconfig"
 require "shellwords"
 require "tmpdir"
+require "ffi"
+require "logger"
 require "liberic/sdk/configuration"
 require "liberic/sdk/fehlercodes"
 require "liberic/sdk/types"
@@ -38,6 +40,32 @@ RSpec.describe "installed ERIC SDK compatibility" do
     expect(status).to be_success, stderr
     expect(stdout).to eq(version)
     expect(stderr).not_to include("required, but")
+  end
+
+  it "checks and validates an example tax filing through Liberic::Process" do
+    example = Dir[File.join(sdk_home, "Beispiel", "ericdemo-java", "ESt_20*.xml")].max
+    skip "the installed ERIC SDK does not include an example income tax filing" unless example
+
+    script = <<~RUBY
+      require "liberic"
+      filing = Liberic::Process.new(File.binread(ARGV.fetch(0)), ARGV.fetch(1))
+      abort "EricCheckXML returned errors" unless filing.check.empty?
+      result = filing.execute
+      abort "EricBearbeiteVorgang returned errors" unless result.values.all?(&:empty?)
+    RUBY
+    stdout, stderr, status = Open3.capture3(
+      { "ERIC_HOME" => sdk_home, "ERIC_HOME_40" => nil },
+      RbConfig.ruby,
+      "-I#{File.join(root, "lib")}",
+      "-e",
+      script,
+      example,
+      File.basename(example, ".xml"),
+      chdir: root
+    )
+
+    expect(status).to be_success, stderr
+    expect(stdout).to be_empty
   end
 
   it "maps every error code declared by the installed SDK" do
