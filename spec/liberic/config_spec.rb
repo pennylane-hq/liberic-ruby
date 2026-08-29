@@ -1,7 +1,18 @@
 require 'spec_helper'
+require 'liberic/sdk/configuration'
+require 'liberic/config'
+
 module Liberic
   describe Config do
-    let(:config) { Config.new }
+    let(:config) { Config.allocate }
+
+    around do |example|
+      original_encoding = Encoding.default_external
+      Encoding.default_external = Encoding::UTF_8
+      example.run
+    ensure
+      Encoding.default_external = original_encoding
+    end
 
     describe '#convert_to_eric' do
       it 'converts true to "ja"' do

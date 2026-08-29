@@ -26,13 +26,50 @@ Or install it yourself (not possible yet) as:
 
     $ gem install liberic
 
-The ERiC library files are not distributed with this gem. They must be
-obtained from the [ELSTER Downloads Page](https://www.elster.de/elsterweb/entwickler/infoseite/eric). (Requires your personal credentials which have to be requested from ELSTER).
+The ERiC library files are not distributed with this gem. On Linux x86-64,
+download and install the SDK and its documentation with:
 
-Follow the installation instructions from the ERiC documentation.
+```sh
+bundle exec rake eric:install
+```
 
-After extracting the downloaded library files to a location of your choice, there should be a folder
-containing at least three subfolders:
+This installs ERiC `43.5.4.0` by default. To select another full release,
+run:
+
+```sh
+ERIC_VERSION=43.5.4.0 bundle exec rake eric:install
+```
+
+The task derives the ELSTER download directory from the version's first
+component. It caches completed archives in `.eric/downloads/` and extracts
+them below `.eric/`, producing this SDK home for the default version:
+
+```text
+.eric/ERiC-43.5.4.0/Linux-x86_64
+```
+
+Allow at least 1.5 GB of free disk space for roughly 680 MB of downloads and
+their extracted contents. Downloads use temporary `.part` files, can be reused
+on later runs, and are not included in the repository or packaged gem. The
+installer supports only the official Linux x86-64 SDK.
+
+After installation, set the version-independent `ERIC_HOME` variable in the
+shell where Liberic will run:
+
+```sh
+export ERIC_HOME="$PWD/.eric/ERiC-43.5.4.0/Linux-x86_64"
+```
+
+The install task prints the exact command for the selected version. A Rake
+process cannot permanently change the environment of its parent shell, so you
+must run the command yourself or add it to your shell configuration.
+
+For a manual or shared installation, obtain ERiC from the
+[ELSTER Entwicklerbereich](https://www.elster.de/elsterweb/entwickler/infoseite/eric),
+which requires developer credentials. You can also browse the public
+[ELSTER developer information](https://www.elster.de/elsterweb/infoseite/entwickler).
+Follow the official installation instructions and extract the SDK to a location
+of your choice. It should contain at least these folders:
 
 ```
 bin/
@@ -40,16 +77,18 @@ include/
 lib/
 ```
 
-Currently, the environment variable `ERIC_HOME_40` needs to be set to this
-folder or the gem will not find the library files.
+Set `ERIC_HOME` to that folder or the gem will not find the library files.
+For compatibility with existing applications, `ERIC_HOME_40` remains a
+fallback when `ERIC_HOME` is not set.
 
 For example:
 
 ```sh
-$ export ERIC_HOME_40=/opt/ERiC-40.3.4.0/Linux-x86_64
+export ERIC_HOME=/opt/ERiC-43.5.4.0/Linux-x86_64
 ```
 
-The gem will raise an `Liberic::InitializationError` if the environment variable is not set.
+The gem will raise a `Liberic::InitializationError` if neither environment
+variable is set.
 In a Rails project this can interfere with running rake (for example
 when building the app in Docker). In this case, use `gem 'liberic', require: false` in your `Gemfile`.
 And require the gem later in your Rails code (for example a model) by
@@ -64,19 +103,19 @@ On *Mac OS X* you need to process the libraries to fix the interal paths
 (credits to @deviantbits):
 
 ```
-libs=`ls $ERIC_HOME_27/lib/*.dylib`
-plugins=`ls $ERIC_HOME_27/lib/plugins2/*.dylib`
+libs=`ls $ERIC_HOME/lib/*.dylib`
+plugins=`ls $ERIC_HOME/lib/plugins2/*.dylib`
 
 for target in $libs
 do
   for lib in $libs
   do
-    install_name_tool -change "@rpath/"`basename $lib` "$ERIC_HOME_27/lib/"`basename $lib` $target
+    install_name_tool -change "@rpath/"`basename $lib` "$ERIC_HOME/lib/"`basename $lib` $target
   done
 
   for plugin in $plugins
   do
-    install_name_tool -change "@rpath/plugins2/"`basename $plugin` "$ERIC_HOME_27/lib/plugins2/"`basename $plugin` $target
+    install_name_tool -change "@rpath/plugins2/"`basename $plugin` "$ERIC_HOME/lib/plugins2/"`basename $plugin` $target
   done
 done
 
@@ -84,7 +123,7 @@ for target in $plugins
 do
   for lib in $libs
   do
-    install_name_tool -change "@rpath/"`basename $lib` "$ERIC_HOME_27/lib/"`basename $lib` $target
+    install_name_tool -change "@rpath/"`basename $lib` "$ERIC_HOME/lib/"`basename $lib` $target
   done
 done
 ```
@@ -92,7 +131,7 @@ done
 Check your settings by running:
 
 ```sh
-$ ls $ERIC_HOME_27/lib/libericapi.*
+$ ls $ERIC_HOME/lib/libericapi.*
 ```
 This should list you one file with an operating system dependend suffix.
 
@@ -188,4 +227,3 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/mpm/liberic. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
-
