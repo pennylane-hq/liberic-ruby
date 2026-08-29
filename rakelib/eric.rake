@@ -1,15 +1,16 @@
 require "fileutils"
 require "net/http"
 require "uri"
+require_relative "../lib/liberic/sdk/configuration"
 
 module Liberic
   class EricInstaller
-    DEFAULT_VERSION = "43.5.4.0"
+    DEFAULT_VERSION = SDK::Configuration::LIBERICAPI_VERSION.last
     BASE_URL = "https://download.elster.de/download/eric"
     ARTIFACT_SUFFIXES = [
       "Linux-x86_64.jar",
-      "Dokumentation.pdf",
-      "Dokumentation.zip"
+      "Dokumentation.zip",
+      "Schemadokumentation.zip"
     ].freeze
 
     class InstallError < StandardError; end
@@ -32,7 +33,7 @@ module Liberic
     end
 
     def urls
-      filenames.map { |filename| "#{BASE_URL}/#{major_version}/#{filename}" }
+      filenames.map { |filename| "#{BASE_URL}/eric_#{major_version}/#{filename}" }
     end
 
     def install_root

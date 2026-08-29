@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0]
+
+Support for ERIC 43.5.4.0.
+
+### Added
+
+- ERIC 43 error codes and installed-SDK compatibility coverage.
+- A reusable prompt for future ERIC SDK upgrades.
+
+### Changed
+
+- Updated the version-4 print parameter layout for PDF callbacks.
+- Updated the SDK installer for ELSTER's current download paths and artifacts.
+
 ## [1.3.0]
 
 Support for ERIC 40.

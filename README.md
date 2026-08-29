@@ -40,8 +40,8 @@ run:
 ERIC_VERSION=43.5.4.0 bundle exec rake eric:install
 ```
 
-The task derives the ELSTER download directory from the version's first
-component. It caches completed archives in `.eric/downloads/` and extracts
+The task derives the ELSTER `eric_<major>` download directory from the version's
+first component. It caches completed archives in `.eric/downloads/` and extracts
 them below `.eric/`, producing this SDK home for the default version:
 
 ```text

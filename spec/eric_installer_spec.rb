@@ -16,9 +16,9 @@ RSpec.describe Liberic::EricInstaller do
 
   it "derives artifact URLs from the full version and its major version" do
     expect(installer.urls).to eq([
-      "https://download.elster.de/download/eric/43/ERiC-43.5.4.0-Linux-x86_64.jar",
-      "https://download.elster.de/download/eric/43/ERiC-43.5.4.0-Dokumentation.pdf",
-      "https://download.elster.de/download/eric/43/ERiC-43.5.4.0-Dokumentation.zip"
+      "https://download.elster.de/download/eric/eric_43/ERiC-43.5.4.0-Linux-x86_64.jar",
+      "https://download.elster.de/download/eric/eric_43/ERiC-43.5.4.0-Dokumentation.zip",
+      "https://download.elster.de/download/eric/eric_43/ERiC-43.5.4.0-Schemadokumentation.zip"
     ])
   end
 
@@ -36,14 +36,18 @@ RSpec.describe Liberic::EricInstaller do
     )
     write_zip(
       File.join(installer.downloads_path, "ERiC-#{version}-Dokumentation.zip"),
-      "ERiC-#{version}/Dokumentation/schema.html" => "fixture schema"
+      "ERiC-#{version}/Dokumentation/readme.html" => "fixture docs"
     )
-    File.write(File.join(installer.downloads_path, "ERiC-#{version}-Dokumentation.pdf"), "fixture pdf")
+    write_zip(
+      File.join(installer.downloads_path, "ERiC-#{version}-Schemadokumentation.zip"),
+      "ERiC-#{version}/Schemadokumentation/schema.html" => "fixture schema"
+    )
 
     expect(installer).not_to receive(:download)
     expect(installer.install).to eq(installer.sdk_home)
     expect(File.read(installer.expected_library)).to eq("fixture library")
-    expect(File.read(File.join(root, ".eric", "ERiC-#{version}", "Dokumentation", "schema.html"))).to eq("fixture schema")
+    expect(File.read(File.join(root, ".eric", "ERiC-#{version}", "Dokumentation", "readme.html"))).to eq("fixture docs")
+    expect(File.read(File.join(root, ".eric", "ERiC-#{version}", "Schemadokumentation", "schema.html"))).to eq("fixture schema")
 
     File.write(installer.expected_library, "keep existing installation")
     expect(installer.install).to eq(installer.sdk_home)
