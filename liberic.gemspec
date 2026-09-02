@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+  spec.required_ruby_version = ">= 3.3.0"
 
   spec.add_dependency "ffi", "~> 1.16"
   spec.add_dependency "nokogiri", "~> 1.16"
@@ -33,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 2.5"
   spec.add_development_dependency "rake", "~> 13.1"
   spec.add_development_dependency "rspec", "~> 3.13"
+  spec.add_development_dependency "rubyzip", "~> 2.3"
 end

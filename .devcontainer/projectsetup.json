@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "projectName": "liberic-ruby",
+  "preset": "ruby",
+  "database": "none",
+  "aiTools": [
+    "opencode"
+  ],
+  "languageVersion": "3.3.0",
+  "ports": [],
+  "systemPackages": [],
+  "generatedBy": "projectsetup"
+}
