@@ -4,7 +4,7 @@ module Liberic
       extend FFI::Library
 
       class DruckParameter < FFI::Struct
-        layout :version,     :uint,
+        layout :version,     :uint, # Set version to 4
                :vorschau,    :uint,
                :duplexDruck, :uint,
                :pdfName,     :pointer,
