@@ -1,7 +1,11 @@
 module Liberic
+  # +Certificate+ encapsulates functionality regarding certificates (for signing).
+  # An instance of Certificate is passed on to +EricBearbeiteVorgang()+ where necessary.
   class Certificate
     attr_reader :features, :handle
 
+    # +cert_file+ path to a pfx file (Portal-Zertifikat)
+    # +pin+ the pin for the certificate (if applicable, string)
     def initialize(cert_file, pin)
       @pin = pin
       ch = FFI::MemoryPointer.new(:uint32, 1)
@@ -26,12 +30,16 @@ module Liberic
       )
     end
 
+    # Returns the result of +EricHoleZertifikatEigenschaften()+
+    # This will be XML describing fields and properties associated with the certificate.
     def properties
       Helpers::Invocation.with_result_buffer do |buffer_handle|
         SDK::API.mt_hole_zertifikat_eigenschaften(Liberic.instance, @handle, @pin, buffer_handle)
       end
     end
 
+    # Returns a +SDK::Types::VerschluesselungsParameter+ data structure that can be passed on to
+    # Process.execute
     def encryption_params
       params = SDK::Types::VerschluesselungsParameter.new
 
