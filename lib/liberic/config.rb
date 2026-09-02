@@ -95,14 +95,15 @@ module Liberic
     def [](key)
       convert_to_ruby(
         Helpers::Invocation.with_result_buffer do |handle|
-          SDK::API.einstellung_lesen(key, handle)
+          SDK::API.mt_einstellung_lesen(Liberic.instance, key, handle)
         end
       )
     end
 
     def []=(key, value)
       Helpers::Invocation.raise_on_error(
-        SDK::API.einstellung_setzen(
+        SDK::API.mt_einstellung_setzen(
+          Liberic.instance,
           key,
           convert_to_eric(value)
         )
@@ -113,7 +114,8 @@ module Liberic
 
     def install_logger
       Helpers::Invocation.raise_on_error(
-        SDK::API.registriere_log_callback(
+        SDK::API.mt_registriere_log_callback(
+          Liberic.instance,
           SDK::API.generate_log_callback do |category, level, message|
             if @logger.respond_to?(:add)
               @logger.add(SDK::Types::LOGGER_SEVERITY[level], message, category)
@@ -145,12 +147,12 @@ module Liberic
 
     def get(key)
       Helpers::Invocation.with_result_buffer(true) do |handle|
-        SDK::API.einstellung_lesen(key, handle)
+        SDK::API.mt_einstellung_lesen(Liberic.instance, key, handle)
       end
     end
 
     def set(key, value)
-      Helpers::Invocation.raise_on_error(SDK::API.einstellung_setzen(key, value))
+      Helpers::Invocation.raise_on_error(SDK::API.mt_einstellung_setzen(Liberic.instance, key, value))
       true
     end
   end

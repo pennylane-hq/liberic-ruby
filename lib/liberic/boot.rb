@@ -25,7 +25,7 @@ module Liberic
   def check_eric_version!
     version_response = Response::Version.new(
       Helpers::Invocation.with_result_buffer do |handle|
-        SDK::API::version(handle)
+        SDK::API.mt_version(Liberic.instance, handle)
       end
     )
 

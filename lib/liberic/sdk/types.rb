@@ -9,7 +9,8 @@ module Liberic
                :duplexDruck, :uint,
                :pdfName,     :pointer,
                :fussText,    :pointer,
-               :ersteSeite,  :uint
+               :pdfCallback, :pointer,
+               :pdfCallbackBenutzerdaten, :pointer
       end
 
       class VerschluesselungsParameter < FFI::Struct
